@@ -1,28 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Contact } from 'D:/test_api5/ipp-5/server/models/Contact';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class ApiService {
-  private baseUrl = 'http://89.208.105.80:3000/api';
+export class ContactService {
+  private apiUrl = 'http://localhost:5000/api/contacts';
 
   constructor(private http: HttpClient) {}
 
-  getBooks(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/books`);
+  getContacts(): Observable<Contact[]> {
+    return this.http.get<Contact[]>(this.apiUrl);
   }
 
-  getAuthors(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/authors`);
+  createContact(contact: Contact): Observable<Contact> {
+    return this.http.post<Contact>(this.apiUrl, contact);
   }
 
-  addBook(book: { title: string; author: string }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/books`, book);
+  deleteContact(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  addAuthor(author: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/authors`, author);
+  updateContact(contact: Contact): Observable<Contact> {
+    return this.http.put<Contact>(`${this.apiUrl}/${contact._id}`, contact);
   }
 }
